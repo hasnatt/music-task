@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title%} Home page {% endblock %}
+
+{% block content%} 
+<div class="container">
+
+    <br>
+    <div class="container">
+        <div class="card">
+            <div class="card-header"> Search Artist</div>
+            <div class="card-body">
+                <form action="#" method="post">
+                    <div class="form-group">
+                        <label for="InputArtist">Artist</label>
+                        <input type="text" class="form-control" placeholder="Enter Artist name" name="artist" >
+                    </div>
+                    
+                    <br>
+                    <button type="submit" value="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+        </div>
+    <hr>
+    <h1>Search Results</h1>
+    {% for artist in artists %}
+    <br>
+    <div class="card">
+        <div class="card-body">
+        <h2 class="card-title">Artist: {{artist['name']}}</h2>
+        <h4 class="card-title">{{artist['disambiguation']}}</h4>
+        <h5 class="card-title">Gender: {{artist['gender']}}</h5>
+        <h5 class="card-title">Country: {{artist['country']}}</h5>
+        <h5 class="card-title">Music Brainz ID: {{artist['id']}}</h5>
+        <p class="card-title">songs include: ....</p>
+
+        
+        <a href="avg/{{artist['id']}}" class="btn btn-secondary">Average words </a>
+        </div>
+    </div>
+    {% endfor %}
+
+
+</div>    
+{% endblock %}

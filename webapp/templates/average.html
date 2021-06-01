@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title%} Home page {% endblock %}
+
+{% block content%} 
+
+
+<div class="container">
+
+<h1>Average number of words in songs by {{artist}}</h1>
+<p>{{id}}</p>
+<table class="table">
+  <thead>
+    <tr>
+
+      <th scope="col">Song</th>
+      <th scope="col">No. of words</th>
+
+    </tr>
+  </thead>
+  <tbody>
+  {% for item in table %}
+    <tr>
+      <td>{{item['song']}}</td>
+      <td>{{item['word_count']}}</td>
+    </tr>
+  {% endfor %}
+  <tr>
+      <td><b>Total</b></td>
+      <td>{{average}}</td>
+    </tr>
+
+  </tbody>
+</table>
+</div>
+{% endblock %}

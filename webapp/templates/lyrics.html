@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %} lyrics {% endblock %}
+
+{% block content %}
+
+<br>
+<div class="container">
+    <div class="card">
+        <div class="card-header"> Song Reccomendation</div>
+        <div class="card-body">
+            <form action="#" method="post">
+                <div class="form-group">
+                    <label for="InputArtist">Artist</label>
+                    <input type="text" class="form-control" placeholder="Enter Artist name" name="artist">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="InputSong">Song name</label>
+                    <input type="text" class="form-control"  placeholder="Enter Song name" name="song">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="InputAmount">Amount</label>
+                    <input type="number" class="form-control"  placeholder="Enter Amount" name="amount">
+                </div>
+                <br>
+                <button type="submit" value="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <h1>Songs you may also like...</h1>
+{% for song in songs %}
+<br>
+    <div class="card">
+        <div class="card-body">
+        <h5 class="card-title">Artist: {{song['artist']}}</h5>
+        <h5 class="card-title">Song: {{song['song']}}</h5>
+        <p class="card-text"></p>
+        <a href="https://www.youtube.com/results?search_query={{song['artist']}} {{song['song']}}" class="btn btn-primary">Listen on youtube</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
