@@ -2,8 +2,8 @@
 # from Lyrics import *
 from LdaController import *
 
-from CsvController import *
-import redis, json
+# from CsvController import *
+# import redis, json
 # search = MusicBrainz('Kid Cudi')
 # search.get_artists()
 

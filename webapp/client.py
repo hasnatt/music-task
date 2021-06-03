@@ -92,9 +92,9 @@ def add_to_csv(artist, song, bagofwords):
         fieldnames = ['id', 'artist', 'song', 'lyrics_bow']
         writer = csv.DictWriter(f, fieldnames)
         writer.writerow({
-            'id': f'{artist}+{song}',
-            'artist': artist,
-            'song': song,
+            'id': f'{artist.lower()}+{song.lower()}',
+            'artist': artist.lower(),
+            'song': song.lower(),
             'lyrics_bow': bagofwords})
     df = pd.read_csv('lyric_words.csv', delimiter=',')
     df = df.drop_duplicates()
