@@ -1,3 +1,5 @@
+
+
 <h1 align="center">
 	<img
 		width="300"
@@ -20,25 +22,25 @@
 ### Features 
 
 A client application which can: 
- - Search for aritst using [MusicBrainz](https://musicbrainz.org/doc/MusicBrainz_API)
- - Find avergae number of words in lyrics for a given artist using [MusicBrainz](https://musicbrainz.org/doc/MusicBrainz_API) & [Lyrics.ovh API](https://lyricsovh.docs.apiary.io/#)
- - Utilise Redis cache server to cahce lyrics. This is implemented because Lyrics.ovh can be really slow, therefore the client stores requests from Lyrics.ovh into a cache server so we dont need to hit Lyrics.ovh API again for a set period of time. 
- - Reccommend songs using Machine learning and NLP. (detailed below this)
+ - Search for artists using [MusicBrainz](https://musicbrainz.org/doc/MusicBrainz_API)
+ - Find the average number of words in lyrics for a given artist using [MusicBrainz](https://musicbrainz.org/doc/MusicBrainz_API) & [Lyrics.ovh API](https://lyricsovh.docs.apiary.io/#)
+ - Utilise Redis cache server to cache lyrics. This is implemented because Lyrics.ovh can be slow, therefore the client stores requests from Lyrics.ovh into a cache server so we don't need to hit Lyrics.ovh API again for a set period. 
+ - Recommend songs using Machine learning and NLP. (detailed below this)
 
-A reccommendation engine which: 
+A recommendation engine which: 
 - Collects lyrics for each Lyrics.ovh request made.
-- perform Natural language Processing on lyrics to find sentiment value to the lyrics, such as removing stop words and perofrming general regular expression. 
-- Perform [LDA topic modelling]() algorithm on the dataset to group songs into gorups/clusters bases on word frequncy
-- Store the model into AWS Dynamo DB and make a serverless API to intereact with the model with query parameter (artist, song, amount)
+- Perform Natural Language Processing on lyrics to find sentiment value to the lyrics, such as removing stop words and performing general regular expression. 
+- Perform [LDA topic modelling](https://towardsdatascience.com/latent-dirichlet-allocation-lda-9d1cd064ffa2) algorithm on the dataset to group songs into groups/clusters bases on word frequency
+- Store the model into AWS Dynamo DB and make a serverless API to interact with the model with query parameter (artist, song, amount)
 
 ### Core technologies
 
 | Technolgy | Usage |
 |--|--|
-| Python |  |
-| [Flask](https://flask.palletsprojects.com/en/2.0.x/) |  |
-| AWS (Lambda, DynamoDB and S3) |  |
-| [scikit-learn](https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.LatentDirichletAllocation.html) |  |
+| Python | The main language used along with various packages |
+| [Flask](https://flask.palletsprojects.com/en/2.0.x/) |  Python-based web microservice used as the client application|
+| AWS (Lambda, DynamoDB and S3) | Various cloud technologies utilised for speed and ease |
+| [scikit-learn](https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.LatentDirichletAllocation.html) | a free software machine learning library for the Python programming language. It is used to run the LDA Model on the collected lyrics dataset |
 
 
 
@@ -52,8 +54,8 @@ youtube link
 
 ## Installation and Usage
 
-### Start local redis server 
-First of all we need to start the cache server. We will be running redis on local host (port 6379).
+### Start local Redis server 
+First of all, we need to start the cache server. We will be running Redis on localhost (port 6379).
 
 #### MacOS and Linux:
 
@@ -66,12 +68,12 @@ In the terminal enter the following commands or refer to the [quick start docume
 - to start the server enter `redis-server` and the server will start on 127.0.0.1:6379. Now leave this terminal open. 
 
  #### Windows:
- Redis is not fully supported on windows but we can hack our way around this. 
- - Go to the [Redis microsoft archives](https://github.com/microsoftarchive/redis/releases/tag/win-3.2.100)
+ Redis is not fully supported on Windows but we can hack our way around this. 
+ - Go to the [Redis Microsoft archives](https://github.com/microsoftarchive/redis/releases/tag/win-3.2.100)
  - Download the zip file called `Redis-x64-3.2.100.zip`
  - Extract the zip file
  - open the `Redis-x64-3.2.100` folder
- - There will be a file called `redis-server.exe`. click on this and it will open a redis server in CMD.
+ - There will be a file called `redis-server.exe`. Click on this and it will open a Redis server in CMD.
  - Server is ready and leave the command prompt open. 
 
 
@@ -108,9 +110,9 @@ pip3 install redis
  
 
 
-## Reccommendation API  
+## Recommendation API  
 
-To reccomend recipes we ran LDA on our lyrics dataset, where a lyric is collected each time we hit the Lyrics.ovh API. we also stored the CSV dataset into and S3 bucket storage which automatically stores the model into a Dynamo DB database. We then use AWS Lambda and API Gateway to create a very simple API to access this dataset. 
+To recommend recipes we ran LDA on our lyrics dataset, where a lyric is collected each time we hit the Lyrics.ovh API. we also stored the CSV dataset into an S3 bucket storage which automatically stores the model into a Dynamo DB database. We then use AWS Lambda and API Gateway to create a very simple API to access this dataset. 
 
 ### How to interact
 We can send a request to the endpoint URL and provide 3 queryparamters:
@@ -119,7 +121,7 @@ We can send a request to the endpoint URL and provide 3 queryparamters:
 Example endpoint (feel free to interacr)    
 https://kxk44df7n2.execute-api.eu-west-2.amazonaws.com/test/transactions?artist=kid%20cudi&song=sad%20people&amount=5
 
-Please note we can only reccommend songs that have been fetched by the lyrics.ovh API, executed in the LDA model and stored in AWS. The intention is the system gathers more knowledge over time for a more accurate model. 
+Please note we can only recommend songs that have been fetched by the lyrics.ovh API, executed in the LDA model and stored in AWS. The intention is the system gathers more knowledge over time for a more accurate model. 
 
 ### Example JSON Respone
 
@@ -159,7 +161,7 @@ Please note we can only reccommend songs that have been fetched by the lyrics.ov
 
 
 ## Todo and future work
-- Hosting the 	Flask application using EC2 or Elastic Beanstalk, this means there would be no installation process.
+- Hosting the 	Flask application using EC2 or Elastic Beanstalk, means there would be no installation process.
 - Host Redis server in AWS Elasticache with int the same VPC as the client application
 - Running the LDA automatically instead of manually. Also, automate the upload to S3.
 - Better UI.
