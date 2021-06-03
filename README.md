@@ -10,7 +10,7 @@
 <h3 align="center">
 	Aire Music- Aire Logic Music Tak
 </h3>
-<p>This application utilises various music API's and technolgies to learn about artist and reccomended songs</p>
+<p>This application utilises various music API's and technologies to learn about artist and recommended songs.</p>
 
 
 
@@ -20,20 +20,20 @@
 ### Features 
 
 A client application which can: 
- - Search for artists using [MusicBrainz](https://musicbrainz.org/doc/MusicBrainz_API)
- - Find the average number of words in lyrics for a given artist using [MusicBrainz](https://musicbrainz.org/doc/MusicBrainz_API) & [Lyrics.ovh API](https://lyricsovh.docs.apiary.io/#)
+ - Search for artists using [MusicBrainz](https://musicbrainz.org/doc/MusicBrainz_API).
+ - Find the average number of words in lyrics for a given artist using [MusicBrainz](https://musicbrainz.org/doc/MusicBrainz_API) & [Lyrics.ovh API](https://lyricsovh.docs.apiary.io/#).
  - Utilise Redis cache server to cache lyrics. This is implemented because Lyrics.ovh can be slow, therefore the client stores requests from Lyrics.ovh into a cache server so we don't need to hit Lyrics.ovh API again for a set period. 
- - Recommend songs using Machine learning and NLP. (detailed below this)
+ - Recommend songs using Machine learning and NLP. (detailed below this).
 
 A recommendation engine which: 
 - Collects lyrics for each Lyrics.ovh request made.
 - Perform Natural Language Processing on lyrics to find sentiment value to the lyrics, such as removing stop words and performing general regular expression. 
-- Perform [LDA topic modelling](https://towardsdatascience.com/latent-dirichlet-allocation-lda-9d1cd064ffa2) algorithm on the dataset to group songs into groups/clusters bases on word frequency
-- Store the model into AWS Dynamo DB and make a serverless API to interact with the model with query parameter (artist, song, amount)
+- Perform [LDA topic modelling](https://towardsdatascience.com/latent-dirichlet-allocation-lda-9d1cd064ffa2) algorithm on the dataset to group songs into groups/clusters bases on word frequency.
+- Store the model into AWS Dynamo DB and make a serverless API to interact with the model with query parameter (artist, song, amount).
 
 ### Core technologies
 
-| Technolgy | Usage |
+| Technology | Usage |
 |--|--|
 | Python | The main language used along with various packages |
 | [Flask](https://flask.palletsprojects.com/en/2.0.x/) |  Python-based web microservice used as the client application|
@@ -48,7 +48,7 @@ A recommendation engine which:
 
 ## Video demonstration 
 
-youtube link 
+https://www.youtube.com/watch?v=BLoCkJNKiBI
 
 ## Installation and Usage
 
@@ -78,7 +78,7 @@ In the terminal enter the following commands or refer to the [quick start docume
 ### Start Flask client application 
 
 #### MacOS & Linux
-Prerequsites: Python3 
+Prerequisites: Python3 
 
 I have provided two options here. either run the script file called script.py into the terminal as `python3 script.py`. This should install all the packages and started the server. If not follow the commands below: 
 
@@ -99,14 +99,35 @@ pip3 install scikit-learn
 pip3 install pyLDAvis
 pip3 install redis
 ```
-- go to webapp director `cd webapp/`
-- run the flask client `python3 client.py`
-- This may take 2/3 minutes to start as it needs to download the NLTK package but after this it should start instantly
-- go to http://127.0.0.1:5000/ in your broswee
+- Go to webapp directory `cd webapp/`
+- Run the flask client `python3 client.py`
+- This may take 2/3 minutes to start as it needs to download the NLTK package but after this, it should start instantly
+- go to http://127.0.0.1:5000/ in your browser
 	
+#### Windows
+ Prerequisites: Python3 
 
- 
+Open command prompt, navigate to the directory using `cd` and enter the following:
 
+
+     python3 -m virtualenv env
+     env\Scripts\activate.bat
+
+ Install pip packages
+```
+pip3 install Flask
+pip3 install pandas
+pip3 install requests
+pip3 install nltk
+pip3 install musicbrainzngs
+pip3 install scikit-learn
+pip3 install pyLDAvis
+pip3 install redis
+```
+- Go to webapp directory `cd webapp/`
+- Run the flask client `python3 client.py`
+- This may take 2/3 minutes to start as it needs to download the NLTK package but after this, it should start instantly
+- go to http://127.0.0.1:5000/ in your browser
 
 ## Recommendation API  
 
@@ -116,12 +137,12 @@ To recommend recipes we ran LDA on our lyrics dataset, where a lyric is collecte
 We can send a request to the endpoint URL and provide 3 queryparamters:
 
     <endpoint>/test/transactions?artist=<artist>&song=<song>&amount=<amount to return>
-Example endpoint (feel free to interacr)    
+Example endpoint (feel free to interact)    
 https://kxk44df7n2.execute-api.eu-west-2.amazonaws.com/test/transactions?artist=kid%20cudi&song=sad%20people&amount=5
 
 Please note we can only recommend songs that have been fetched by the lyrics.ovh API, executed in the LDA model and stored in AWS. The intention is the system gathers more knowledge over time for a more accurate model. 
 
-### Example JSON Respone
+### Example JSON Response
 
     {
 	    "artist":"kid cudi",
