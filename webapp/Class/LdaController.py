@@ -1,6 +1,9 @@
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.decomposition import LatentDirichletAllocation, TruncatedSVD
+from pyLDAvis import prepare, save_html, show
+from pyLDAvis import sklearn as sklearn_lda
+import pyLDAvis
 import random
 
 class LdaController:
@@ -18,7 +21,7 @@ class LdaController:
         count_vect = CountVectorizer(max_df=0.9, min_df=2) 
         doc_term_matrix = count_vect.fit_transform(data_frame['lyrics_bow'].values.astype('U'))
 
-        LDA = LatentDirichletAllocation(n_components=self.no_topics, learning_decay = 0.7, random_state=48)
+        LDA = LatentDirichletAllocation(n_components=self.no_topics, learning_decay = 0.7, random_state=16)
         LDA = LDA.fit(doc_term_matrix)
 
         for i in range(10):
@@ -40,15 +43,8 @@ class LdaController:
         topic_values.shape
         data_frame['topic'] = topic_values.argmax(axis=1)
 
+        vis_lda(LDA, doc_term_matrix, count_vect)
 
-
-
-    def vis_lda(LDA, doc_term_matrix, count_vect):
-
-        model_vis_data = sklearn_lda.prepare(LDA, doc_term_matrix, count_vect,sort_topics=False)
-        pyLDAvis.save_html(model_vis_data, 'lda_output.html')
-                            
-        show(model_vis_data)
 
 
     def execute_lda(self):
@@ -56,5 +52,6 @@ class LdaController:
         self.latent_dirichlet(data_frame)
         data_frame.to_csv('lda.csv', sep=',', encoding='utf-8',columns=['id', 'artist','song', 'topic', ], index=False)
 
-
-
+def vis_lda(LDA, doc_term_matrix, count_vect):
+    model_vis_data = sklearn_lda.prepare(LDA, doc_term_matrix, count_vect, sort_topics=False)
+    pyLDAvis.save_html(model_vis_data, '../templates/lda_output.html')
